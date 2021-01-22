@@ -8,7 +8,7 @@ namespace Burse_Bot
     internal class DB
     {
         private readonly string conStr = $@"Data Source=localhost\SQLEXPRESS; 
-DataBase=BotBurseDB; User ID=sa; Password=sa";
+DataBase=BotBurseDB; User ID=sa; Password=200026frolov";
 
         private SqlDataReader readerBonus;
         private SqlDataReader readerBonusInterval;

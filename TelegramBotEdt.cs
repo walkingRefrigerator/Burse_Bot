@@ -29,12 +29,14 @@ namespace Burse_Bot
         private System.Threading.Timer timer;
         private List<string> listAllIdUser;
 
+        
+
         private TelegramBotClient botClient;
 
         public TelegramBotEdt(string telegrambottoken)
         {
             _telegrambotToken = telegrambottoken;
-
+            
             botClient = new TelegramBotClient(_telegrambotToken) { Timeout = TimeSpan.FromSeconds(10) };
             db = new DB();
             parse = new ParseEld();
@@ -68,7 +70,7 @@ namespace Burse_Bot
 
         }
 
-
+       
         #endregion
 
         #region Таймер
@@ -81,7 +83,7 @@ namespace Burse_Bot
             {
                 return; //time already passed
             }
-
+            
             timer = new System.Threading.Timer(x =>
             {
                 ParseEld();
