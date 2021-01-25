@@ -28,7 +28,6 @@ namespace Burse_Bot
         private DB db;
         private List<Variable.ParseInfo> parseInfos;
         private ParseEld parse;
-        private System.Threading.Timer timer;
         private List<string> listAllIdUser;
         private const double interval60Minutes = 30 * 1000;
         private System.Timers.Timer checkForTime = new System.Timers.Timer(interval60Minutes);
