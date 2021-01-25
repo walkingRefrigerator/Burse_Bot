@@ -76,18 +76,7 @@ namespace Burse_Bot
         #region Таймер
         public void SetUpTimer(TimeSpan alertTime)
         {
-            DateTime current = DateTime.Now;
-            TimeSpan timeToGo = alertTime - current.TimeOfDay;
 
-            if (timeToGo < TimeSpan.Zero)
-            {
-                return; //time already passed
-            }
-            
-            timer = new System.Threading.Timer(x =>
-            {
-                ParseEld();
-            }, null, timeToGo, Timeout.InfiniteTimeSpan);
         }
 
         #endregion
