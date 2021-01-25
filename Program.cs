@@ -11,8 +11,6 @@ namespace Burse_Bot
 
                 telegrambot.StartListening();
 
-                telegrambot.SetUpTimer(new TimeSpan(22, 40, 10));
-
                 Console.ReadLine();
 
                 telegrambot.StopListening();

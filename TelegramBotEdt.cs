@@ -7,6 +7,8 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Timers;
+
 
 
 
@@ -28,15 +30,14 @@ namespace Burse_Bot
         private ParseEld parse;
         private System.Threading.Timer timer;
         private List<string> listAllIdUser;
-
-        
-
+        private const double interval60Minutes = 30 * 1000;
+        private System.Timers.Timer checkForTime = new System.Timers.Timer(interval60Minutes);
         private TelegramBotClient botClient;
 
         public TelegramBotEdt(string telegrambottoken)
         {
             _telegrambotToken = telegrambottoken;
-            
+
             botClient = new TelegramBotClient(_telegrambotToken) { Timeout = TimeSpan.FromSeconds(10) };
             db = new DB();
             parse = new ParseEld();
@@ -45,6 +46,8 @@ namespace Burse_Bot
 
             botClient.OnMessage += Bot_OnMessage;
             botClient.OnCallbackQuery += Bot_CallbackQuery;
+            checkForTime.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
+            checkForTime.Enabled = true;
         }
 
         #region Парс сайта
@@ -70,14 +73,12 @@ namespace Burse_Bot
 
         }
 
-       
+
         #endregion
 
         #region Таймер
-        public void SetUpTimer(TimeSpan alertTime)
-        {
-
-        }
+        public void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
+            => ParseEld();
 
         #endregion
 
