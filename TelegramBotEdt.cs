@@ -55,16 +55,16 @@ namespace Burse_Bot
             parse.GetPage();
             parseInfos = parse.ParsTover();
 
-            InputOnlineFile file = new InputOnlineFile(parseInfos[1].PathImage);
+            InputOnlineFile file = new InputOnlineFile(parseInfos[0].PathImage);
             listAllIdUser = db.AllIDTeleg();
 
             int n = 0;
             while (n != listAllIdUser.Count)
             {
                 botClient.SendPhotoAsync(listAllIdUser[n], file,
-                    $@"<b><a href='{parseInfos[1].Url}'>{parseInfos[1].TitlePaper}</a></b>
-{parseInfos[1].TagePaper}
-{parseInfos[1].Description}", ParseMode.Html);
+                    $@"<b><a href='{parseInfos[0].Url}'>{parseInfos[0].TitlePaper}</a></b>
+{parseInfos[0].TagePaper}
+{parseInfos[0].Description}", ParseMode.Html);
 
                 n++;
 
