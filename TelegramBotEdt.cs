@@ -29,8 +29,8 @@ namespace Burse_Bot
         private List<Variable.ParseInfo> parseInfos;
         private ParseEld parse;
         private List<string> listAllIdUser;
-        private const double interval60Minutes = 30 * 1000;
-        private System.Timers.Timer checkForTime = new System.Timers.Timer(interval60Minutes);
+        private const double interval8Hours = 3600000;
+        private System.Timers.Timer checkForTime = new System.Timers.Timer(interval8Hours);
         private TelegramBotClient botClient;
 
         public TelegramBotEdt(string telegrambottoken)
