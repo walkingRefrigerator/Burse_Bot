@@ -52,7 +52,7 @@ namespace Burse_Bot
         #region Парс сайта
         public void ParseEld()
         {
-            parse.GetPage();
+            parse.GetPageEld();
             parseInfos = parse.ParsTover();
 
             InputOnlineFile file = new InputOnlineFile(parseInfos[0].PathImage);
@@ -80,8 +80,6 @@ namespace Burse_Bot
             => ParseEld();
 
         #endregion
-
-
 
         #region Старт\Стоп бота
         public void StartListening()

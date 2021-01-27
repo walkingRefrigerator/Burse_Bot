@@ -10,11 +10,10 @@ namespace Burse_Bot
         private string Response = null;
         private const string LinkEld = "https://www.eldorado.ru/actions.php?type=online";
 
-        public void GetPage()
+        public void GetPageEld()
         {
             HttpRequest request = new HttpRequest();
 
-            #region eldorado parsing
             request.CharacterSet = Encoding.UTF8;
             request.AddHeader(HttpHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
             request.AddHeader("Accept-Encoding", "gzip, deflate");
@@ -26,13 +25,9 @@ namespace Burse_Bot
             request.KeepAlive = true;
             request.UserAgent = Http.OperaUserAgent();
 
-            #endregion
-
             request.AllowAutoRedirect = true;
 
-            #region Response Eld
             HttpResponse response = request.Get(LinkEld);
-            #endregion
             
             Response = response.ToString();
         }
