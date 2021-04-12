@@ -5,31 +5,17 @@ using Leaf.xNet;
 
 namespace Burse_Bot
 {
+    //Парсинг сайтов
     public class ParseEld
     {
         private string Response = null;
         private const string LinkEld = "https://www.eldorado.ru/actions.php?type=online";
-        private const string LinkHabr = "https://habr.com/ru/";
 
+        //Отправка запроса на сайт
         public void GetPage()
         {
             HttpRequest request = new HttpRequest();
 
-            #region habr parsing
-
-            //request.AddHeader(HttpHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-            //request.AddHeader("Accept-Encoding", "gzip, deflate");
-            //request.AddHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7");
-            //request.AddHeader("Cache-Control", "max-age=0");
-            //request.AddHeader("Host", "habr.com");
-            //request.AddHeader("Referer", LinkHabr);
-            //request.AddHeader("Upgrade-Insecure-Requests", "1");
-            //request.KeepAlive = true;
-            //request.UserAgent = Http.ChromeUserAgent();
-
-            #endregion
-
-            #region eldorado parsing
             request.CharacterSet = Encoding.UTF8;
             request.AddHeader(HttpHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
             request.AddHeader("Accept-Encoding", "gzip, deflate");
@@ -41,20 +27,14 @@ namespace Burse_Bot
             request.KeepAlive = true;
             request.UserAgent = Http.OperaUserAgent();
 
-            #endregion
-
             request.AllowAutoRedirect = true;
 
-            #region Response Eld
             HttpResponse response = request.Get(LinkEld);
-            #endregion
-            #region Response Habr
-            //HttpResponse response = request.Get(LinkHabr);
-            #endregion
-
+            
             Response = response.ToString();
         }
 
+        //Обработка html кода
         public List<Variable.ParseInfo> ParsTover()
         {
             List<Variable.ParseInfo> parses = new List<Variable.ParseInfo>();

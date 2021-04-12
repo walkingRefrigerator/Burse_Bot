@@ -8,10 +8,7 @@ namespace Burse_Bot
         {
             using (TelegramBotEdt telegrambot = new TelegramBotEdt(Config.TelegramBotToken))
             {
-
                 telegrambot.StartListening();
-
-                telegrambot.SetUpTimer(new TimeSpan(22, 40, 10));
 
                 Console.ReadLine();
 

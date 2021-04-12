@@ -7,6 +7,8 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Timers;
+
 
 
 
@@ -26,41 +28,53 @@ namespace Burse_Bot
         private DB db;
         private List<Variable.ParseInfo> parseInfos;
         private ParseEld parse;
-        private System.Threading.Timer timer;
         private List<string> listAllIdUser;
-
+        private const double interval8Hours = 3600000;
+        private System.Timers.Timer checkForTime = new System.Timers.Timer(interval8Hours);
         private TelegramBotClient botClient;
 
+        //Наполнение констуктора
         public TelegramBotEdt(string telegrambottoken)
         {
             _telegrambotToken = telegrambottoken;
 
+            //Создание сущности нашего бота
             botClient = new TelegramBotClient(_telegrambotToken) { Timeout = TimeSpan.FromSeconds(10) };
+
             db = new DB();
             parse = new ParseEld();
             parseInfos = new List<Variable.ParseInfo>();
             listAllIdUser = new List<string>();
 
+            //Подписываем на события обработчики
             botClient.OnMessage += Bot_OnMessage;
             botClient.OnCallbackQuery += Bot_CallbackQuery;
+
+            //Создание таймера для парсера
+            checkForTime.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
+            checkForTime.Enabled = true;
         }
+
 
         #region Парс сайта
         public void ParseEld()
         {
+            //Получение данных с сайта
             parse.GetPage();
             parseInfos = parse.ParsTover();
-
             InputOnlineFile file = new InputOnlineFile(parseInfos[1].PathImage);
+
+            //Получение id всех пользователей
             listAllIdUser = db.AllIDTeleg();
 
+            //Рассылка рекламы для всех пользователей
             int n = 0;
             while (n != listAllIdUser.Count)
             {
                 botClient.SendPhotoAsync(listAllIdUser[n], file,
-                    $@"<b><a href='{parseInfos[1].Url}'>{parseInfos[1].TitlePaper}</a></b>
-{parseInfos[1].TagePaper}
-{parseInfos[1].Description}", ParseMode.Html);
+                    $@"<b><a href='{parseInfos[0].Url}'>{parseInfos[0].TitlePaper}</a></b>
+{parseInfos[0].TagePaper}
+{parseInfos[0].Description}", ParseMode.Html);
 
                 n++;
 
@@ -72,26 +86,14 @@ namespace Burse_Bot
         #endregion
 
         #region Таймер
-        public void SetUpTimer(TimeSpan alertTime)
-        {
-            DateTime current = DateTime.Now;
-            TimeSpan timeToGo = alertTime - current.TimeOfDay;
-
-            if (timeToGo < TimeSpan.Zero)
-            {
-                return; //time already passed
-            }
-
-            timer = new System.Threading.Timer(x =>
-            {
-                ParseEld();
-            }, null, timeToGo, Timeout.InfiniteTimeSpan);
-        }
+        //Подписка на таймер метода с парсингом
+        public void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
+            => ParseEld();
 
         #endregion
 
 
-
+        //Запуск\остановка бота
         #region Старт\Стоп бота
         public void StartListening()
         {
@@ -104,6 +106,7 @@ namespace Burse_Bot
         }
         #endregion
 
+        //Обработка действий пользователя
         #region Обработчики
         private async void Bot_CallbackQuery(object sender, CallbackQueryEventArgs e)
         {
