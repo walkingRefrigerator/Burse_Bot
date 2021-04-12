@@ -33,31 +33,41 @@ namespace Burse_Bot
         private System.Timers.Timer checkForTime = new System.Timers.Timer(interval8Hours);
         private TelegramBotClient botClient;
 
+        //Наполнение констуктора
         public TelegramBotEdt(string telegrambottoken)
         {
             _telegrambotToken = telegrambottoken;
 
+            //Создание сущности нашего бота
             botClient = new TelegramBotClient(_telegrambotToken) { Timeout = TimeSpan.FromSeconds(10) };
+
             db = new DB();
             parse = new ParseEld();
             parseInfos = new List<Variable.ParseInfo>();
             listAllIdUser = new List<string>();
 
+            //Подписываем на события обработчики
             botClient.OnMessage += Bot_OnMessage;
             botClient.OnCallbackQuery += Bot_CallbackQuery;
+
+            //Создание таймера для парсера
             checkForTime.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
             checkForTime.Enabled = true;
         }
 
+
         #region Парс сайта
         public void ParseEld()
         {
-            parse.GetPageEld();
+            //Получение данных с сайта
+            parse.GetPage();
             parseInfos = parse.ParsTover();
+            InputOnlineFile file = new InputOnlineFile(parseInfos[1].PathImage);
 
-            InputOnlineFile file = new InputOnlineFile(parseInfos[0].PathImage);
+            //Получение id всех пользователей
             listAllIdUser = db.AllIDTeleg();
 
+            //Рассылка рекламы для всех пользователей
             int n = 0;
             while (n != listAllIdUser.Count)
             {
@@ -76,11 +86,14 @@ namespace Burse_Bot
         #endregion
 
         #region Таймер
+        //Подписка на таймер метода с парсингом
         public void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
             => ParseEld();
 
         #endregion
 
+
+        //Запуск\остановка бота
         #region Старт\Стоп бота
         public void StartListening()
         {
@@ -93,6 +106,7 @@ namespace Burse_Bot
         }
         #endregion
 
+        //Обработка действий пользователя
         #region Обработчики
         private async void Bot_CallbackQuery(object sender, CallbackQueryEventArgs e)
         {
