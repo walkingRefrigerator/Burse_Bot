@@ -5,12 +5,14 @@ using Leaf.xNet;
 
 namespace Burse_Bot
 {
+    //Парсинг сайтов
     public class ParseEld
     {
         private string Response = null;
         private const string LinkEld = "https://www.eldorado.ru/actions.php?type=online";
         private const string LinkHabr = "https://habr.com/ru/";
 
+        //Отправка запроса на сайт
         public void GetPage()
         {
             HttpRequest request = new HttpRequest();
@@ -55,6 +57,7 @@ namespace Burse_Bot
             Response = response.ToString();
         }
 
+        //Обработка html кода
         public List<Variable.ParseInfo> ParsTover()
         {
             List<Variable.ParseInfo> parses = new List<Variable.ParseInfo>();

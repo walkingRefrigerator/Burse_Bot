@@ -7,6 +7,7 @@ namespace Burse_Bot
 {
     internal class DB
     {
+        //Данные для подключения к БД
         private readonly string conStr = $@"Data Source=localhost\SQLEXPRESS; 
 DataBase=BotBurseDB; User ID=sa; Password=200026frolov";
 
@@ -17,6 +18,7 @@ DataBase=BotBurseDB; User ID=sa; Password=200026frolov";
         private SqlDataReader readerAllID;
 
         private string oper = null;
+
 
         public async Task<string> FeedBackOutput(string username)
         {
@@ -45,6 +47,8 @@ wHERE Table_UserTeleg.UsernameTeleg = '{username}'", connection);
             }
         }
 
+
+        //Запрос на получение id всех пользователей
         public List<string> AllIDTeleg()
         {
             using (var connection = new SqlConnection(conStr))
@@ -142,6 +146,7 @@ Where Table_UserTeleg.UsernameTeleg = '{username}'", connection);
             }
         }
 
+        //Запрос на данные ассортименте бонусов выбраного магазина (всего 10 строк)
         public async Task<string> OutPutBonus(string shopname)
         {
             using (var connection = new SqlConnection(conStr))
@@ -173,6 +178,8 @@ order by Table_BonusPrice.Bonus Desc, Table_BonusPrice.Price Asc", connection);
 
         }
 
+
+        //Вывод данных из бд в указаном интервале строк
         public async Task<string> OutPutBonusInterval(string shopname, int from, int before)
         {
             using (var connection = new SqlConnection(conStr))
