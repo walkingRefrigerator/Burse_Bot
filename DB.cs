@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Burse_Bot
 {
     internal class DB
     {
         //Данные для подключения к БД
-        private readonly string conStr = $@"Data Source=localhost\SQLEXPRESS; 
-DataBase=BotBurseDB; User ID=sa; Password=200026frolov";
+        private readonly string conStr = ConfigurationManager.AppSettings.Get("Connect");
 
         private SqlDataReader readerBonus;
         private SqlDataReader readerBonusInterval;
