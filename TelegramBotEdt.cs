@@ -62,7 +62,7 @@ namespace Burse_Bot
             //Получение данных с сайта
             parse.GetPage();
             parseInfos = parse.ParsTover();
-            InputOnlineFile file = new InputOnlineFile(parseInfos[1].PathImage);
+            InputOnlineFile file = new InputOnlineFile(parseInfos[0].PathImage);
 
             //Получение id всех пользователей
             listAllIdUser = db.AllIDTeleg();
